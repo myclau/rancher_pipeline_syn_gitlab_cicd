@@ -13,7 +13,7 @@ echo ""
 retrycount=1
 while [ "$status" == "pending" ] || [ "$status" == "running" ];
 do
-status=$(curl --header "PRIVATE-TOKEN: $token" "$pipelineurl" | jq -r --arg ref "$branch" 'map(select(.ref==$ref))| .[0].status')
+status=$(curl -s --header "PRIVATE-TOKEN: $token" "$pipelineurl" | jq -r --arg ref "$branch" 'map(select(.ref==$ref))| .[0].status')
 if [ "$status" == "canceled" ] || [ "$status" == "failed" ] || [ "$status" == "$null" ]; then
     echo -ne "[$retrycount] Current status: $status "
     exit 1
